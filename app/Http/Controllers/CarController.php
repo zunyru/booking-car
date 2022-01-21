@@ -7,20 +7,25 @@ use App\Http\Requests\StoreCarRequest;
 use App\Http\Requests\UpdateCarRequest;
 use App\Repositories\CarRepository;
 use App\Repositories\ModelCarRepository;
+use Illuminate\Support\Facades\View;
 
 class CarController extends Controller
 {
 
-    protected $model_car;
-    protected $car;
+    protected $model_car_repo;
+    protected $car_repo;
 
     public function __construct(
         ModelCarRepository $modelCarRepository,
         CarRepository      $carRepository
     )
     {
-        $this->model_car = $modelCarRepository;
-        $this->car = $carRepository;
+        $this->model_car_repo = $modelCarRepository;
+        $this->car_repo = $carRepository;
+
+        $model_cars = $this->model_car_repo->getAll();
+
+        View::share('model_cars', $model_cars);
     }
 
     /**
@@ -40,20 +45,24 @@ class CarController extends Controller
      */
     public function create()
     {
-        $model_cars = $this->model_car->getAll();
-
-        return view('cars.create', compact('model_cars'));
+        return view('cars.create-edit');
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\StoreCarRequest $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreCarRequest $request)
     {
-        //
+        $this->car_repo->store($request);
+
+        return redirect()
+            ->route('car.create')
+            ->with([
+                'messege' => 'sucess'
+            ]);
     }
 
     /**
@@ -71,11 +80,11 @@ class CarController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param \App\Models\Car $car
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function edit(Car $car)
     {
-        //
+        return view('cars.create-edit', compact('car'));
     }
 
     /**
@@ -83,11 +92,13 @@ class CarController extends Controller
      *
      * @param \App\Http\Requests\UpdateCarRequest $request
      * @param \App\Models\Car $car
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateCarRequest $request, Car $car)
     {
-        //
+        $this->car_repo->valiable($car, $request);
+
+        return redirect()->route('car.edit', $car);
     }
 
     /**
