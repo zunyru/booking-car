@@ -30,4 +30,9 @@ class CarRepository
     {
         return $data->delete();
     }
+
+    public function getPaginate()
+    {
+        return Car::query()->paginate();
+    }
 }

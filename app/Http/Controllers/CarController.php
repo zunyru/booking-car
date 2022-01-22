@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\BookingProcess;
 use App\Models\Car;
 use App\Http\Requests\StoreCarRequest;
 use App\Http\Requests\UpdateCarRequest;
@@ -31,11 +32,15 @@ class CarController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        BookingProcess::dispatch();
+
+        $cars = $this->car_repo->getPaginate();
+
+        return view('cars.index', compact('cars'));
     }
 
     /**
@@ -56,10 +61,10 @@ class CarController extends Controller
      */
     public function store(StoreCarRequest $request)
     {
-        $this->car_repo->store($request);
+        $data = $this->car_repo->store($request);
 
         return redirect()
-            ->route('car.create')
+            ->route('car.index')
             ->with([
                 'messege' => 'sucess'
             ]);
@@ -96,19 +101,29 @@ class CarController extends Controller
      */
     public function update(UpdateCarRequest $request, Car $car)
     {
-        $this->car_repo->valiable($car, $request);
+        $data = $this->car_repo->valiable($car, $request);
 
-        return redirect()->route('car.edit', $car);
+        return redirect()
+            ->route('car.index')
+            ->with([
+                'messege' => 'sucess'
+            ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param \App\Models\Car $car
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Car $car)
     {
-        //
+        $this->car_repo->delete($car);
+
+        return redirect()
+            ->route('car.index')
+            ->with([
+                'messege' => 'sucess'
+            ]);
     }
 }

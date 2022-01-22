@@ -4,7 +4,10 @@ use App\Http\Controllers\CarController;
 use Illuminate\Support\Facades\Route;
 
 //รูปแบบที่ 1
-Route::get('car/create', [CarController::class, 'create'])
+Route::get('car', [CarController::class, 'index'])
+    ->name('car.index');
+
+Route::get('car.create', [CarController::class, 'create'])
     ->name('car.create');
 
 Route::post('car/store', [CarController::class, 'store'])
@@ -16,8 +19,11 @@ Route::get('car/{car}/edit', [CarController::class, 'edit'])
 Route::match(['put', 'patch'], 'car/{car}', [CarController::class, 'update'])
     ->name('car.update');
 
+Route::delete('car/{car}', [CarController::class, 'destroy'])
+    ->name('car.destroy');
+
 //รูปแบบที่ 2
-//Route::resource('car',CarController::class);
+Route::resource('car',CarController::class);
 
 //รูปแบบ 3 จะต้องเป็น laravel 8.80 ขึ้นไปเท่านั้น
 /*Route::prefix('car')

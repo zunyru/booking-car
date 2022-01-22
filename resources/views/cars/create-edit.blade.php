@@ -3,7 +3,7 @@
 @section('title', 'Car crate')
 
 @section('content')
-
+	
 	<div class="container mx-auto px-40">
 		<form action="{{ (Route::currentRouteName() === 'car.create') ? route('car.store') :  route('car.update',@$car) }}"
 		      method="POST"
