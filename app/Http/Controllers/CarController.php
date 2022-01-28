@@ -8,10 +8,12 @@ use App\Http\Requests\StoreCarRequest;
 use App\Http\Requests\UpdateCarRequest;
 use App\Repositories\CarRepository;
 use App\Repositories\ModelCarRepository;
+use App\Traits\ImageUploadTrait;
 use Illuminate\Support\Facades\View;
 
 class CarController extends Controller
 {
+    use ImageUploadTrait;
 
     protected $model_car_repo;
     protected $car_repo;
@@ -61,6 +63,15 @@ class CarController extends Controller
      */
     public function store(StoreCarRequest $request)
     {
+        if (!empty($request->image)) {
+            $request->image = $this->uploadeImgae(
+                $request->image,
+                'cars',
+                1,
+                80
+            );
+        }
+
         $data = $this->car_repo->store($request);
 
         return redirect()
@@ -101,6 +112,15 @@ class CarController extends Controller
      */
     public function update(UpdateCarRequest $request, Car $car)
     {
+        if (!empty($request->image)) {
+            $request->image = $this->uploadeImgae(
+                $request->image,
+                'cars',
+                1,
+                80
+            );
+        }
+
         $data = $this->car_repo->valiable($car, $request);
 
         return redirect()

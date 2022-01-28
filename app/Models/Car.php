@@ -10,6 +10,10 @@ class Car extends Model
 {
     use HasFactory;
 
+    protected $appends = [
+        'price_bath'
+    ];
+
     public function modelCar()
     {
         return $this->belongsTo(ModelCar::class);
@@ -34,5 +38,10 @@ class Car extends Model
         return new Attribute(
             get: fn($value) => number_format($value, 0)
         );
+    }
+
+    public function getPriceBathAttribute()
+    {
+        return "{$this->price} ฿";
     }
 }

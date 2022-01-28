@@ -22,6 +22,7 @@ class CarRepository
         !isset($params->no_car) ?: $data->no_car = $params->no_car;
         !isset($params->price) ?: $data->price = $params->price;
         !isset($params->stock) ?: $data->stock = $params->stock;
+        !isset($params->image) ?: $data->image = $params->image;
 
         return $data->save();
     }
@@ -34,5 +35,10 @@ class CarRepository
     public function getPaginate()
     {
         return Car::query()->paginate();
+    }
+
+    public function getLimit($limit)
+    {
+        return Car::query()->limit($limit)->get();
     }
 }

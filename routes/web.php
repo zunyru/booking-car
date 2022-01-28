@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\CarController;
+use App\Http\Controllers\Frontend\CarController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +15,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', [CarController::class, 'index'])->name('home');

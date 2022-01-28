@@ -7,7 +7,9 @@
 	<div class="container mx-auto px-40">
 		<form action="{{ (Route::currentRouteName() === 'car.create') ? route('car.store') :  route('car.update',@$car) }}"
 		      method="POST"
-		      class="mt-10">
+		      class="mt-10"
+		      enctype="multipart/form-data"
+		>
 			@csrf
 			@if((Route::currentRouteName() === 'car.create'))
 				@method('POST')
@@ -65,6 +67,14 @@
 				       value="{{ !empty($car) ? $car->stock : '' }}"
 				       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 				       placeholder="จำนวน" required>
+			</div>
+			
+			<div class="mb-6">
+				<label for="no_car" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+					รูปรถ</label>
+				<input type="file"
+				       name="image"
+				      >
 			</div>
 			
 			
