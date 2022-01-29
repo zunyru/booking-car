@@ -27,6 +27,7 @@ class BookingController extends Controller
 
     public function booking(Request $request)
     {
+        //เรียกใช้ job
         BookingProcess::dispatch($request->all());
 
         return "OK";

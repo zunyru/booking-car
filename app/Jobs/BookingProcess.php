@@ -34,6 +34,7 @@ class BookingProcess implements ShouldQueue
      */
     public function handle()
     {
+        //เรียกใช้ event
         event(new BookingCreate($this->booking));
     }
 }
