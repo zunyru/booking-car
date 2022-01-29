@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Frontend\BookingController;
 use App\Http\Controllers\Frontend\CarController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [CarController::class, 'index'])->name('home');
+
+Route::get('/booking/{car}', [BookingController::class, 'bookingFrom'])
+    ->name('booking.from');
+
+Route::post('booking', [BookingController::class, 'booking'])
+    ->name('booking');

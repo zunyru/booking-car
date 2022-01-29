@@ -41,4 +41,14 @@ class CarRepository
     {
         return Car::query()->limit($limit)->get();
     }
+
+    public function findById($id)
+    {
+        return Car::query()->findOrFail($id);
+    }
+
+    public function decrementStock($car, $amount)
+    {
+        return $car->decrement('stock', $amount);
+    }
 }

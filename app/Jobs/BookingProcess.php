@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\BookingCreate;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -14,14 +15,16 @@ class BookingProcess implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $booking;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($booking_data)
     {
-        //
+        $this->booking = $booking_data;
     }
 
     /**
@@ -31,6 +34,6 @@ class BookingProcess implements ShouldQueue
      */
     public function handle()
     {
-        Log::info('Job naja');
+        event(new BookingCreate($this->booking));
     }
 }

@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Car extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $appends = [
         'price_bath'
@@ -28,7 +29,7 @@ class Car extends Model
     protected function price(): Attribute
     {
         return new Attribute(
-            get: fn($value) => number_format($value, 0),
+            //get: fn($value) => number_format($value, 0),
             set: fn($value) => (float)$value
         );
     }
